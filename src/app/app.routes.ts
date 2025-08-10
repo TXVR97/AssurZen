@@ -1,3 +1,17 @@
+// src/app/app.routes.ts
 import { Routes } from '@angular/router';
 
-export const routes: Routes = [];
+import { Home } from './features/home/home';
+import { Contract } from './features/contract/contract';
+import { Attestations } from './features/attestations/attestations';
+import { Reimbursements } from './features/reimbursements/reimbursements';
+import { Support } from './features/support/support';
+
+export const routes: Routes = [
+  { path: '', component: Home, title: 'Asurzen • Accueil' },
+  { path: 'contract', component: Contract, title: 'Asurzen • Mon contrat' },
+  { path: 'attestations', component: Attestations, title: 'Asurzen • Attestations' },
+  { path: 'reimbursements', component: Reimbursements, title: 'Asurzen • Remboursements' },
+  { path: 'support', component: Support, title: 'Asurzen • Support' },
+  { path: '**', redirectTo: '' },
+];
