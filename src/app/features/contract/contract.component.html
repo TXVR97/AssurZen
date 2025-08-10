@@ -1,0 +1,64 @@
+@if (loading()) {
+    <p class="text-gray-500">Chargement du contrat…</p>
+  } @else if (contract()) {
+    <div class="grid gap-4 sm:grid-cols-2">
+      <div class="rounded-xl border p-4">
+        <div class="text-sm text-gray-500">Titulaire</div>
+        <div class="text-lg font-medium">{{ contract()?.holderName }}</div>
+      </div>
+  
+      <div class="rounded-xl border p-4">
+        <div class="text-sm text-gray-500">Formule</div>
+        <div class="text-lg font-medium">{{ contract()?.plan }}</div>
+      </div>
+  
+      <div class="rounded-xl border p-4">
+        <div class="text-sm text-gray-500">Début de contrat</div>
+        <div class="text-lg font-medium">
+          {{ contract()?.startDate | date:'longDate' }}
+        </div>
+      </div>
+  
+      <div class="rounded-xl border p-4">
+        <div class="text-sm text-gray-500">Mensualité</div>
+        <div class="text-lg font-medium">
+          {{ contract()?.monthlyPrice | currency:'EUR' }}
+        </div>
+      </div>
+    </div>
+  
+    <!-- Formulaire édition nom entreprise -->
+    <form (ngSubmit)="saveCompanyName()" class="rounded-xl border p-4 space-y-3 mt-4">
+      <label class="block text-sm text-gray-600 mb-1" for="companyName">
+        Nom de l’entreprise
+      </label>
+  
+      <div class="flex gap-3 items-start">
+        <input
+          id="companyName"
+          type="text"
+          class="w-full rounded-lg border px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          [formControl]="companyNameCtrl"
+          [placeholder]="contract()?.companyName"
+        />
+  
+        <button
+          type="submit"
+          class="rounded-lg bg-blue-600 px-4 py-2 text-white disabled:opacity-40"
+          [disabled]="companyNameCtrl.invalid || saving() || companyNameCtrl.value === contract()?.companyName"
+        >
+          {{ saving() ? 'Enregistrement…' : 'Enregistrer' }}
+        </button>
+      </div>
+  
+      @if (companyNameCtrl.invalid && companyNameCtrl.touched) {
+        <p class="text-sm text-red-600">2 à 80 caractères requis.</p>
+      }
+  
+      @if (saved()) {
+        <p class="text-sm text-green-700">✅ Nom d’entreprise mis à jour.</p>
+      }
+    </form>
+  } @else {
+    <div class="text-sm text-gray-500">Contrat introuvable.</div>
+  }

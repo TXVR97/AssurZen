@@ -1,0 +1,97 @@
+{
+  "contracts": [
+    {
+      "id": 1,
+      "holderName": "Franck Maxwell",
+      "companyName": "Asurzen Studio",
+      "plan": "Pro",
+      "startDate": "2025-01-15",
+      "status": "active",
+      "monthlyPrice": 89.9
+    },
+    {
+      "id": 2,
+      "holderName": "Claire Dubois",
+      "companyName": "Indépendante Santé",
+      "plan": "Essentiel",
+      "startDate": "2024-11-01",
+      "status": "active",
+      "monthlyPrice": 49.9
+    },
+    {
+      "id": 3,
+      "holderName": "Karim Benali",
+      "companyName": "KB Graphisme",
+      "plan": "Pro",
+      "startDate": "2023-09-20",
+      "status": "active",
+      "monthlyPrice": 79.0
+    },
+    {
+      "id": 4,
+      "holderName": "Sophie Lambert",
+      "companyName": "SL Conseil",
+      "plan": "Premium",
+      "startDate": "2024-03-10",
+      "status": "active",
+      "monthlyPrice": 99.9
+    },
+    {
+      "id": 5,
+      "holderName": "Jean Rossi",
+      "companyName": "Rossi Photographie",
+      "plan": "Essentiel",
+      "startDate": "2022-07-05",
+      "status": "expired",
+      "monthlyPrice": 45.0
+    },
+    {
+      "id": 6,
+      "holderName": "Marion Petit",
+      "companyName": "MP Freelance",
+      "plan": "Pro",
+      "startDate": "2025-02-01",
+      "status": "active",
+      "monthlyPrice": 85.5
+    },
+    {
+      "id": 7,
+      "holderName": "Lucien Morel",
+      "companyName": "LM Dev Web",
+      "plan": "Premium",
+      "startDate": "2023-01-18",
+      "status": "active",
+      "monthlyPrice": 105.0
+    },
+    {
+      "id": 8,
+      "holderName": "Isabelle Thomas",
+      "companyName": "IT Design",
+      "plan": "Essentiel",
+      "startDate": "2024-06-15",
+      "status": "active",
+      "monthlyPrice": 55.0
+    },
+    {
+      "id": 9,
+      "holderName": "Olivier Garnier",
+      "companyName": "OG Consulting",
+      "plan": "Pro",
+      "startDate": "2024-09-30",
+      "status": "suspended",
+      "monthlyPrice": 78.5
+    },
+    {
+      "id": 10,
+      "holderName": "Nadia Chérif",
+      "companyName": "NC Marketing",
+      "plan": "Premium",
+      "startDate": "2025-03-05",
+      "status": "active",
+      "monthlyPrice": 110.0
+    }
+  ],
+  "attestations": [],
+  "reimbursements": [],
+  "supportMessages": []
+}
