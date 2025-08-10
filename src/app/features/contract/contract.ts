@@ -1,6 +1,7 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormControl, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
 import { ContractService } from './contract.service';
 import type { Contract as ContractModel } from './contract.model';
 
@@ -11,65 +12,93 @@ import type { Contract as ContractModel } from './contract.model';
   templateUrl: './contract.component.html'
 })
 export class ContractComponent implements OnInit {
-
-  // ✅ State réactif avec Angular Signals
   contract = signal<ContractModel | null>(null);
   loading = signal(true);
   saving = signal(false);
   saved = signal(false);
+  error = signal(false);
 
-  // ✅ FormControl pour le nom de l’entreprise
   companyNameCtrl = new FormControl('', [
     Validators.required,
     Validators.minLength(2),
-    Validators.maxLength(80)
+    Validators.maxLength(80),
   ]);
 
-  constructor(private contractService: ContractService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private contractService: ContractService
+  ) {}
 
   ngOnInit(): void {
-    // 📌 Récupération du contrat depuis l’API
-    this.contractService.getContract(1).subscribe({
-      next: (data) => {
-        this.contract.set(data);
-        this.companyNameCtrl.setValue(data.companyName); // préremplir le champ
+    // /contract/:id → si présent on le prend, sinon on charge le 1er contrat
+    const idParam = this.route.snapshot.paramMap.get('id');
+    const id = idParam ? Number(idParam) : NaN;
+  
+    if (Number.isNaN(id)) {
+      // Pas d'id dans l'URL → on charge le premier contrat dispo
+      this.loading.set(true);
+      this.error.set(false);
+  
+      this.contractService.getAllContracts().subscribe({
+        next: (list) => {
+          if (list.length) {
+            const first = list[0];
+            this.contract.set(first);
+            this.companyNameCtrl.setValue(first.companyName);
+          } else {
+            this.error.set(true);
+          }
+          this.loading.set(false);
+        },
+        error: () => {
+          this.error.set(true);
+          this.loading.set(false);
+        },
+      });
+      return;
+    }
+  
+    // Id présent → on charge ce contrat précis
+    this.fetchContract(id);
+  }
+
+  private fetchContract(id: number) {
+    this.loading.set(true);
+    this.error.set(false);
+
+    this.contractService.getContract(id).subscribe({
+      next: (c) => {
+        this.contract.set(c);
+        this.companyNameCtrl.setValue(c.companyName);
         this.loading.set(false);
       },
-      error: (err) => {
-        console.error('Erreur lors du chargement du contrat :', err);
+      error: () => {
+        this.error.set(true);
         this.loading.set(false);
-      }
+      },
     });
   }
 
-  /**
-   * 💾 Sauvegarder le nouveau nom d’entreprise
-   */
-  saveCompanyName(): void {
-    if (!this.contract() || this.companyNameCtrl.invalid) return;
+  saveCompanyName() {
+    const c = this.contract();
+    if (!c || this.companyNameCtrl.invalid) return;
 
     this.saving.set(true);
     this.saved.set(false);
 
-    const updatedContract: ContractModel = {
-      ...this.contract()!,
-      companyName: this.companyNameCtrl.value || ''
-    };
+    const updated: ContractModel = { ...c, companyName: this.companyNameCtrl.value || '' };
 
-    // 📌 Appel PUT vers l’API
-    this.contractService.updateContract(updatedContract).subscribe({
-      next: (data) => {
-        this.contract.set(data);
-        this.saving.set(false);
+    this.contractService.updateContract(updated).subscribe({
+      next: (res) => {
+        this.contract.set(res);
         this.saved.set(true);
-
-        // Message de confirmation temporaire
-        setTimeout(() => this.saved.set(false), 3000);
-      },
-      error: (err) => {
-        console.error('Erreur lors de la sauvegarde :', err);
         this.saving.set(false);
-      }
+        setTimeout(() => this.saved.set(false), 2500);
+      },
+      error: () => {
+        this.saving.set(false);
+        alert('Échec de la mise à jour.');
+      },
     });
   }
 }

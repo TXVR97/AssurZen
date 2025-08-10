@@ -11,7 +11,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
         <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
           <a routerLink="/" class="font-bold tracking-wide">Asurzen</a>
           <nav class="flex gap-4 text-sm">
-            <a routerLink="/contract" class="hover:underline">Contrat</a>
+            <a routerLink="/contracts" class="hover:underline">Contrats</a>
             <a routerLink="/attestations" class="hover:underline">Attestations</a>
             <a routerLink="/reimbursements" class="hover:underline">Remboursements</a>
             <a routerLink="/support" class="hover:underline">Support</a>
